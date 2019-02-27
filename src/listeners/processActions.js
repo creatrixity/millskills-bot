@@ -19,6 +19,8 @@ const processDialogflowAction = (request, response) => {
   // Extract parameters from the query.
   const { course } = parameters;
 
+  console.log(parameters, action);
+
   const actionsMap = {
     'input.getCourseInformation': {
       handler: getCourseInfo,
