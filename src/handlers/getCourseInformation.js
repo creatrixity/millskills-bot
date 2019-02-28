@@ -41,23 +41,52 @@ function getCourseInformation (course, cloudFNResponse){
         } = snippet;
 
         return {
-          card: {
-            title,
-            "subtitle": description,
-            "imageUri": thumbnails.default.url,
+          "card": {
             "buttons": [
               {
-                "text": `See this resource`,
-                "postback": `https://youtube.com/watch?v=${id.videoId}`
+                "postback": "Card Link URL or text",
+                "text": "Card Link Title"
               }
-            ]
+            ],
+            "imageUri": "http://urltoimage.com",
+            "subtitle": "Card Subtitle",
+            "title": "Card Title",
           }
         }
       });
 
       return cloudFNResponse.send({
         fulfillmentText: `We found ${items.length} resource${items.length > 1 && 's'}.`,
-        fulfillmentMessages: messages
+        fulfillmentMessages: [
+          {
+            "card": {
+              "title": "Card Title",
+              "subtitle": "Card subtitle",
+              "imageUri": "https://github.com/fluidicon.png",
+              "buttons": [
+                {
+                  "text": "Go to Google",
+                  "postback": "www.google.com"
+                },
+                {
+                  "text": "Go to Dialogflow",
+                  "postback": "www.dialogflow.com"
+                },
+                {
+                  "text": "Go to Slack",
+                  "postback": "www.slack.com"
+                }
+              ]
+            },
+            "platform": "FACEBOOK"
+          },
+          {
+            "text": {
+              "text": [
+                ""
+              ]
+            }
+          }]
       });
     });
 }
