@@ -10,27 +10,27 @@ const getCourseInfo = require('../handlers/getCourseInformation');
  * 
  * @returns {Object<response>|Function}
  */
-const processDialogflowAction = (request, response) => {
-  const { action, parameters } = request.body.queryResult;
+const processDialogflowAction = (action, fields, response) => {
 
   // Set response headers.
   response.setHeader('Content-Type', 'application/json');
 
   // Extract parameters from the query.
-  const { course } = parameters;
-
-  console.log(parameters, action);
+  const { course } = fields;
 
   const actionsMap = {
     'input.getCourseInformation': {
       handler: getCourseInfo,
-      arguments: [course, response, action]
+      arguments: [course.stringValue, response, action]
     }
   }
 
   // Handle invalid actions.
   if (!actionsMap[action]) {
-    return response.send('Sorry, I had a little trouble with your question.');
+    return response.send({ messages: [
+        {text: 'Sorry, I had a little trouble with your question.'}
+      ] 
+    });
   }
 
   const actionObject = actionsMap[action];

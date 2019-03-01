@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const { createGallery } = require('../utilities/chatfuelPayloadGenerator');
 const {
   YOUTUBE_CHANNEL_ID,
   YOUTUBE_API_KEY
@@ -23,12 +24,14 @@ function getCourseInformation (course, cloudFNResponse){
       
       if (!items.length) {
         return cloudFNResponse.send({
-          fulfillmentText:  `I'm sorry. We currently don't have any resources for ${course}.`
+          messages: [
+            {text: `I'm sorry. We currently don't have any resources for ${course}.`}
+          ]
         });
       }
       
       // Build messages collection for relay as fulfillment messages.
-      const messages = items.map(item => {
+      const cards = items.map(item => {
         const {
           snippet,
           id
@@ -41,53 +44,20 @@ function getCourseInformation (course, cloudFNResponse){
         } = snippet;
 
         return {
-          "card": {
-            "buttons": [
-              {
-                "postback": "Card Link URL or text",
-                "text": "Card Link Title"
-              }
-            ],
-            "imageUri": "http://urltoimage.com",
-            "subtitle": "Card Subtitle",
-            "title": "Card Title",
-          }
+          title,
+          "subtitle": description,
+          "image_url": thumbnails.high.url,
+          "buttons": [
+            {
+              "type": "web_url",
+              "title": `Watch this video`,
+              "url": `https://youtube.com/watch?v=${id.videoId}`
+            }
+          ]
         }
       });
 
-      return cloudFNResponse.send({
-        fulfillmentText: `We found ${items.length} resource${items.length > 1 && 's'}.`,
-        fulfillmentMessages: [
-          {
-            "card": {
-              "title": "Card Title",
-              "subtitle": "Card subtitle",
-              "imageUri": "https://github.com/fluidicon.png",
-              "buttons": [
-                {
-                  "text": "Go to Google",
-                  "postback": "www.google.com"
-                },
-                {
-                  "text": "Go to Dialogflow",
-                  "postback": "www.dialogflow.com"
-                },
-                {
-                  "text": "Go to Slack",
-                  "postback": "www.slack.com"
-                }
-              ]
-            },
-            "platform": "FACEBOOK"
-          },
-          {
-            "text": {
-              "text": [
-                ""
-              ]
-            }
-          }]
-      });
+      return cloudFNResponse.send(createGallery({ cards }));
     });
 }
 

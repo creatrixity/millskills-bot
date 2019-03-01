@@ -4,7 +4,9 @@
   "description": "A DialogFlow ML powered chat bot agent for Millenial Skills.",
   "main": "index.js",
   "scripts": {
-    "start": "supervisor ./src/index.js",
+    "start": "set-auth && npm run supervise",
+    "supervise": "supervisor ./src/index.js",
+    "set-auth": "set GOOGLE_APPLICATION_CREDENTIALS=C:\/Users\/hp\/Downloads\/Millenial-Skills-28f34d91c29f.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -26,6 +28,7 @@
     "dialogflow": "^0.8.0",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
-    "node-fetch": "^2.3.0"
+    "node-fetch": "^2.3.0",
+    "uuid": "^3.3.2"
   }
 }
