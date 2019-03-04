@@ -6,7 +6,7 @@
   "scripts": {
     "start": "set-auth && npm run supervise",
     "supervise": "supervisor ./src/index.js",
-    "set-auth": "set GOOGLE_APPLICATION_CREDENTIALS=C:\/Users\/hp\/Downloads\/Millenial-Skills-28f34d91c29f.json",
+    "set-auth": "set GOOGLE_APPLICATION_CREDENTIALS=C:/Users/hp/Downloads/Millenial-Skills-28f34d91c29f.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -27,8 +27,11 @@
     "body-parser": "^1.18.3",
     "dialogflow": "^0.8.0",
     "dotenv": "^6.2.0",
+    "ejs": "^2.6.1",
+    "email-templates": "^5.0.4",
     "express": "^4.16.4",
     "node-fetch": "^2.3.0",
+    "nodemailer": "^5.1.1",
     "uuid": "^3.3.2"
   }
 }

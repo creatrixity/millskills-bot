@@ -1,10 +1,24 @@
 'use strict';
 
 /**
+ * Creates a text message.
+ * 
+ * @param {String|Array<Object>} payload
+ * @returns {String<JSON>}
+ */
+const createTextMessage = (payload) => {
+  const messages = typeof payload === 'string' ? [{ text: payload }] : payload;
+
+  return JSON.stringify({
+    messages
+  });
+}
+
+/**
  * Creates a gallery comprising of multiple cards.
  * 
  * @param {Array<Object>} cards 
- * @returns {Object}
+ * @returns {String<JSON>}
  */
 const createGallery = ({ cards }) => {
   return JSON.stringify({
@@ -24,5 +38,6 @@ const createGallery = ({ cards }) => {
 }
 
 module.exports = {
+  createTextMessage,
   createGallery
 };

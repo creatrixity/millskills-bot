@@ -1,5 +1,8 @@
 const fetch = require('node-fetch');
-const { createGallery } = require('../utilities/chatfuelPayloadGenerator');
+const {
+  createTextMessage,
+  createGallery
+} = require('../utilities/chatfuelPayloadGenerator');
 const {
   YOUTUBE_CHANNEL_ID,
   YOUTUBE_API_KEY
@@ -11,7 +14,9 @@ const {
  * @param {Object} course 
  * @param {Function} cloudFNResponse 
  */
-function getCourseInformation (course, cloudFNResponse){
+function getCourseInformation (parameters, cloudFNResponse){
+  const { course } = JSON.parse(parameters);
+
   // Build the request query URI.
   const queryHost = 'https://www.googleapis.com/youtube/v3/search';
   const queryString = course.trim().replace(/\s+/, '+');
@@ -23,11 +28,10 @@ function getCourseInformation (course, cloudFNResponse){
       const { items } = parsedData;
       
       if (!items.length) {
-        return cloudFNResponse.send({
-          messages: [
-            {text: `I'm sorry. We currently don't have any resources for ${course}.`}
-          ]
-        });
+        console.log(createTextMessage(`I'm sorry. We currently don't have any resources for ${course}.`));
+        return cloudFNResponse.send(
+          createTextMessage(`I'm sorry. We currently don't have any resources for ${course}.`)
+        );
       }
       
       // Build messages collection for relay as fulfillment messages.
