@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "set-auth && npm run supervise",
+    "serve:prod": "set-auth-bash & npm run supervise",
     "supervise": "supervisor ./src/index.js",
     "set-auth": "set GOOGLE_APPLICATION_CREDENTIALS=C:/Users/hp/Downloads/Millenial-Skills-28f34d91c29f.json",
     "test": "echo \"Error: no test specified\" && exit 1"
