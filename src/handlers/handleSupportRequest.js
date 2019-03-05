@@ -1,6 +1,9 @@
 'use strict';
 const { createTextMessage } = require('../utilities/chatfuelPayloadGenerator');
-const { sendSupportNotification } = require('../lib/mailer');
+const {
+  sendSupportNotification,
+  sendRefundRequestNotification
+} = require('../lib/mailer');
 const { SUPPORT_MAIL_ADDRESS } = process.env;
 
 const handleSupportRequest = ({ userFirstName, response }) => {
@@ -45,7 +48,7 @@ const handleCustomerMediaVolunteeringStatus = ({
         { text: message }
       ]));
 
-      sendSupportNotification({ customer_email, complaint, userFirstName });
+      sendSupportNotification({ customer_email, complaint, name: userFirstName });
     } else {
       return response.send({
         redirect_to_blocks: ['Will Volunteer Media']
@@ -66,7 +69,7 @@ const handleCustomerMedia = ({
 
     let message = `Ok thanks, ${userFirstName}... Our support team has been notified, keep an eye on your inbox from ${SUPPORT_MAIL_ADDRESS}`;
     
-    sendSupportNotification({ customer_email, complaint, userFirstName, userMedia });
+    sendSupportNotification({ customer_email, complaint, name: userFirstName, userMedia });
 
     return response.send(createTextMessage([
       { text: message }
@@ -86,8 +89,6 @@ const handleRefundRequest = ({ userFirstName, response }) => {
 const handleCustomerCCDigits = ({ userFirstName, parameters, response }) => {
   const { ccdigits } = JSON.parse(parameters);
 
-  sendSupportNotification(customer_email, complaint, userFirstName, userMedia);
-
   return response.send(createTextMessage([
     { text: `Got it, ${userFirstName}! Your last 4 CC digits are ${ccdigits}.`},
     { text: "Please give a reason for requesting a refund."},
@@ -97,8 +98,10 @@ const handleCustomerCCDigits = ({ userFirstName, parameters, response }) => {
 const handleCustomerRefundReason = ({ userFirstName, parameters, response }) => {
   const {
     ccdigits,
-    complaints
+    reason
   } = JSON.parse(parameters);
+
+  sendRefundRequestNotification({ ccdigits, reason, name: userFirstName });
 
   return response.send(createTextMessage([
     {
