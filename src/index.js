@@ -16,12 +16,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Setup endpoints.
 app.post('/', require('./listeners/setupIntentsListener'));
+app.post('/webhook-listener', require('./listeners/processWebhookCall'));
 app.get('/sendMail', function (req, res) {
   const { sendSupportNotification } = require('./lib/mailer');
 
   sendSupportNotification('fred@example.com', 'I hate tea', 'Fred');
 });
-// app.post('/', require('./listeners/processActions'));
 
 // Listen for requests.
 app.listen(PORT, () => console.log(`Express server is listening on port ${PORT}`))

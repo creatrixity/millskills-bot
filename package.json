@@ -26,6 +26,7 @@
   "homepage": "https://github.com/creatrixity/millskills-bot#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "child_process": "^1.0.2",
     "dialogflow": "^0.8.0",
     "dotenv": "^6.2.0",
     "ejs": "^2.6.1",
