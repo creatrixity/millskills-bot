@@ -8,6 +8,7 @@ const {
   handleCustomerContactEmail,
   handleCustomerMediaVolunteeringStatus,
   handleCustomerMedia,
+  handleRefundRequest
 } = require('../handlers/handleSupportRequest');
 
 /**
@@ -35,35 +36,15 @@ const processDialogflowAction = ({
   response.setHeader('Content-Type', 'application/json');
 
   const actionsMap = {
-    'input.getCourseInformation': {
-      handler: getCourseInfo,
-      arguments: [parameters, response]
-    },
-
-    'input.initSupportRequest': {
-      handler: handleSupportRequest,
-      arguments: [userFirstName, response]
-    },
-
-    'input.getComplaint': {
-      handler: handleSupportRequestFollowup,
-      arguments: [userFirstName, response]
-    },
-
-    'input.getCustomerContactMail': {
-      handler:   handleCustomerContactEmail,
-      arguments: [parameters, userFirstName, response]
-    },
-
-    'input.getCustomerMediaVolunteeringStatus': {
-      handler:   handleCustomerMediaVolunteeringStatus,
-      arguments: [parameters, userFirstName, response]
-    },
-
-    'input.getCustomerMedia': {
-      handler:   handleCustomerMedia,
-      arguments: [parameters, userFirstName, userMedia, response]
-    },
+    'input.getCourseInformation': getCourseInfo,
+    'input.initSupportRequest': handleSupportRequest,
+    'input.getComplaint': handleSupportRequestFollowup,
+    'input.getCustomerContactMail': handleCustomerContactEmail,
+    'input.getCustomerMediaVolunteeringStatus': handleCustomerMediaVolunteeringStatus,
+    'input.getCustomerMedia': handleCustomerMedia,
+    'input.initRefundRequest': handleRefundRequest,
+    'input.getCustomerCCDigits': handleCustomerCCDigits,
+    'input.getCustomerRefundReason': handleCustomerRefundReason,
   }
 
   // Handle invalid actions.
@@ -72,7 +53,7 @@ const processDialogflowAction = ({
   } else {
     const actionObject = actionsMap[action];
 
-    return actionObject.handler.apply(this, actionObject.arguments);  
+    return actionObject.apply(this, [{ parameters, userFirstName, userMedia, response }]);  
   }
 };
 

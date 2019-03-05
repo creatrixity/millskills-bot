@@ -10,13 +10,12 @@ const nodemailer = require('nodemailer');
 const ejs = require('ejs');
 const path = require('path');
 
-const sendSupportNotification = (email, complaint, name, media) => {
-  ejs.renderFile(path.join(__dirname, '../templates/mail/supportNotificationMail.ejs'), {
-    complaint,
-    email,
-    name,
-    media
-  }, function (err, html) {
+const sendMail = ({
+  templatePath,
+  templateParams,
+  subject
+}) => {
+  ejs.renderFile(path.join(__dirname, templatePath), templateParams, function (err, html) {
     var transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -26,10 +25,10 @@ const sendSupportNotification = (email, complaint, name, media) => {
     });
   
     const mailOptions = {
+      subject, // Subject line
+      html,  // plain text body
       from: MAIL_SENDER_ADDRESS, // sender address
       to: SUPPORT_MAIL_ADDRESS, // list of receivers
-      subject: `Chatbot Support Request from ${name}`, // Subject line
-      html  // plain text body
     };
     
     transporter.sendMail(mailOptions, function (err, info) {
@@ -37,10 +36,36 @@ const sendSupportNotification = (email, complaint, name, media) => {
         console.log(err)
       else
         console.log(info);
-    });  
-  })
+    });
+  });
+};
+
+const sendSupportNotification = ({ email, complaint, name, media }) => {
+  return sendMail({
+    templatePath: '../templates/mail/supportNotificationMail.ejs',
+    templateParams: {
+      complaint,
+      email,
+      name,
+      media  
+    },
+    subject: `Chatbot Support: Aid Request from ${name}`
+  });
+}
+
+const sendRefundRequestNotification = ({ ccdigits, reason, name }) => {
+  return sendMail({
+    templatePath: '../templates/mail/refundRequestMail.ejs',
+    templateParams: {
+      reason,
+      ccdigits,
+      name,
+    },
+    subject: `Chatbot Support: Refund Request from ${name}`
+  });
 }
 
 module.exports = {
-  sendSupportNotification
+  sendSupportNotification,
+  sendRefundRequestNotification
 };

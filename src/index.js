@@ -17,10 +17,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Setup endpoints.
 app.post('/', require('./listeners/setupIntentsListener'));
 app.post('/webhook-listener', require('./listeners/processWebhookCall'));
-app.get('/sendMail', function (req, res) {
+app.get('/sendMail', function () {
   const { sendSupportNotification } = require('./lib/mailer');
 
-  sendSupportNotification('fred@example.com', 'I hate tea', 'Fred');
+  sendSupportNotification({ email: 'fred@example.com', complaint: 'I hate tea', name: 'Fred' });
 });
 
 // Listen for requests.

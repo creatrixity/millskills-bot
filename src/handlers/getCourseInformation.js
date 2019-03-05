@@ -14,7 +14,7 @@ const {
  * @param {Object} course 
  * @param {Function} cloudFNResponse 
  */
-function getCourseInformation (parameters, cloudFNResponse){
+function getCourseInformation ({ parameters, response }){
   const { course } = JSON.parse(parameters);
 
   // Build the request query URI.
@@ -28,8 +28,7 @@ function getCourseInformation (parameters, cloudFNResponse){
       const { items } = parsedData;
       
       if (!items.length) {
-        console.log(createTextMessage(`I'm sorry. We currently don't have any resources for ${course}.`));
-        return cloudFNResponse.send(
+        return response.send(
           createTextMessage(`I'm sorry. We currently don't have any resources for ${course}.`)
         );
       }
@@ -61,7 +60,7 @@ function getCourseInformation (parameters, cloudFNResponse){
         }
       });
 
-      return cloudFNResponse.send(createGallery({ cards }));
+      return response.send(createGallery({ cards }));
     });
 }
 
