@@ -14,6 +14,11 @@ function deploy (res) {
   });
 }
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 function processWebhookCall (req, res) {
   const {
     sender,
