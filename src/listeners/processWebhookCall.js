@@ -7,10 +7,10 @@ function deploy (res) {
   childProcess.exec('cd /root/millskills-bot && ./post-deploy-actions.sh', function(err, stdout, stderr){
     if (err) {
      console.error(err);
-     return res.send(500);
+     return res.sendStatus(500);
     }
     
-    res.send(200);
+    res.sendStatus(200);
   });
 }
 
