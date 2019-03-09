@@ -1,3 +1,5 @@
+'use strict';
+
 function processWebhookCall (req, res) {
   var secret = "uchiha-uzumaki-san";
 
@@ -24,3 +26,5 @@ function processWebhookCall (req, res) {
     }
   })
 }
+
+module.exports = processWebhookCall;
