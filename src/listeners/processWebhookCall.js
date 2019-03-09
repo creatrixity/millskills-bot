@@ -1,5 +1,11 @@
 'use strict';
 
+/**
+ * Processing Github webhook calls.
+ * 
+ * @param {Object} req 
+ * @param {Object} res 
+ */
 function processWebhookCall (req, res) {
   var secret = "uchiha-uzumaki-san";
 
