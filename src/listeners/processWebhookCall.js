@@ -14,7 +14,7 @@ function processWebhookCall (req, res) {
   const { execFile } = require('child_process');
   console.log('Received webhook call from Github');
 
-  req.on('data', async function(chunk) {
+  req.on('data', function(chunk) {
     let sig = "sha1=" + crypto.createHmac('sha1', secret).update(chunk.toString()).digest('hex');
 
     if (req.headers['x-hub-signature'] == sig) {
@@ -23,12 +23,12 @@ function processWebhookCall (req, res) {
       }
 
       // Exec a shell script
-      await execFile('/root/millskills-bot/post-deploy-actions.sh', execOptions, function(error, stdout, stderr) {
+      execFile('/root/millskills-bot/post-deploy-actions.sh', execOptions, function(error, stdout, stderr) {
         if (error) {
           console.error('stderr', stderr);
           throw error;
         }
-        
+
         console.log('stdout', stdout);
       });
 
