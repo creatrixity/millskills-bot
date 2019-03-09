@@ -1,4 +1,11 @@
-cd /root/millskills-bot
+echo "Pulling from Master" 
+
 git pull origin master
-npm install
+
+echo "Pulled successfully from master"
+
+echo "Restarting server..."
+
 pm2 restart index
+
+echo "Server restarted Successfully"
