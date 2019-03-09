@@ -5,7 +5,7 @@ function processWebhookCall (req, res) {
 
   let crypto = require('crypto');
 
-  // const exec = require('child_process').exec;
+  const { execFile } = require('child_process');
   console.log('Received webhook call from Github');
 
   req.on('data', async function(chunk) {
