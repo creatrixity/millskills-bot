@@ -1,11 +1,5 @@
 'use strict';
 
-/**
- * Processing Github webhook calls.
- * 
- * @param {Object} req 
- * @param {Object} res 
- */
 function processWebhookCall (req, res) {
   var secret = "uchiha-uzumaki-san";
 
@@ -23,7 +17,7 @@ function processWebhookCall (req, res) {
       }
 
       // Exec a shell script
-      await execFile('./post-deploy-actions.sh', execOptions, function(error, stdout, stderr) {
+      await execFile('/root/millskills-bot/post-deploy-actions.sh', execOptions, function(error, stdout, stderr) {
         // Log success in some manner
         console.log( 'exec complete' );
       });
