@@ -1,34 +1,28 @@
 'use strict';
 
-function processWebhookCall (req, res) {
-  var secret = "uchiha-uzumaki-san";
+const childProcess = require('child_process');
+const githubUsername = 'creatrixity';
 
-  let crypto = require('crypto');
-
-  const { execFile } = require('child_process');
-  console.log('Received webhook call from Github');
-
-  req.on('data', function(chunk) {
-    let sig = "sha1=" + crypto.createHmac('sha1', secret).update(chunk.toString()).digest('hex');
-
-    if (req.headers['x-hub-signature'] == sig) {
-      var execOptions = {
-        maxBuffer: 1024 * 1024 // 1mb
-      }
-
-      // Exec a shell script
-      execFile('/root/millskills-bot/post-deploy-actions.sh', execOptions, function(error, stdout, stderr) {
-        if (error) {
-          console.error('stderr', stderr);
-          throw error;
-        }
-
-        console.log('stdout', stdout);
-      });
-
-      console.log('Processing changes from webhook...');
+function deploy (res) {
+  childProcess.exec('cd /root/millskills-bot && ./post-deploy-actions.sh', function(err, stdout, stderr){
+    if (err) {
+     console.error(err);
+     return res.send(500);
     }
-  })
+    
+    res.send(200);
+  });
+}
+
+function processWebhookCall (req, res) {
+  const {
+    sender,
+    ref
+  } = req.body;
+
+  if (ref.indexOf('master') > -1 && sender.login === githubUsername) {
+    deploy(res);
+  }
 }
 
 module.exports = processWebhookCall;
