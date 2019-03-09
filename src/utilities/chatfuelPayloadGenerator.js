@@ -20,20 +20,24 @@ const createTextMessage = (payload) => {
  * @param {Array<Object>} cards 
  * @returns {String<JSON>}
  */
-const createGallery = ({ cards }) => {
-  return JSON.stringify({
-    messages: [
-      {
-        attachment: {
-          type: "template",
-          payload: {
-            template_type: "generic",
-            image_aspect_ratio: "square",
-            elements: cards
-          }
+const createGallery = ({ cards, text }) => {
+  let messages = [
+    {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "generic",
+          image_aspect_ratio: "square",
+          elements: cards
         }
-      },
-    ]
+      }
+    },
+  ];
+
+  if (text && text.length) messages.push({ text })
+
+  return JSON.stringify({
+    messages
   })
 }
 

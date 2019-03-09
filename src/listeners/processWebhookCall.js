@@ -1,22 +1,26 @@
 function processWebhookCall (req, res) {
   var secret = "uchiha-uzumaki-san";
-  var repo = "/root/millskills-bot/";
-  
+
   let crypto = require('crypto');
-  
-  const exec = require('child_process').exec;
-  
-  req.on('data', function(chunk) {
-      let sig = "sha1=" + crypto.createHmac('sha1', secret).update(chunk.toString()).digest('hex');
 
-      if (req.headers['x-hub-signature'] == sig) {
-          exec('cd ' + repo + ' && git pull');
-          exec('npm install')
-          exec('pm2 restart index')
+  // const exec = require('child_process').exec;
+  console.log('Received webhook call from Github');
+
+  req.on('data', async function(chunk) {
+    let sig = "sha1=" + crypto.createHmac('sha1', secret).update(chunk.toString()).digest('hex');
+
+    if (req.headers['x-hub-signature'] == sig) {
+      var execOptions = {
+        maxBuffer: 1024 * 1024 // 1mb
       }
-  });
 
-  res.end();
-};
+      // Exec a shell script
+      await execFile('./post-deploy-actions.sh', execOptions, function(error, stdout, stderr) {
+        // Log success in some manner
+        console.log( 'exec complete' );
+      });
 
-module.exports = processWebhookCall;
+      console.log('Processing changes from webhook...');
+    }
+  })
+}
