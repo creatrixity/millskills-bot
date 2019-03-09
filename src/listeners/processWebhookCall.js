@@ -24,8 +24,12 @@ function processWebhookCall (req, res) {
 
       // Exec a shell script
       await execFile('/root/millskills-bot/post-deploy-actions.sh', execOptions, function(error, stdout, stderr) {
-        // Log success in some manner
-        console.log( 'exec complete' );
+        if (error) {
+          console.error('stderr', stderr);
+          throw error;
+        }
+        
+        console.log('stdout', stdout);
       });
 
       console.log('Processing changes from webhook...');
