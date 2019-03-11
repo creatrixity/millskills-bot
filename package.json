@@ -32,6 +32,7 @@
     "ejs": "^2.6.1",
     "email-templates": "^5.0.4",
     "express": "^4.16.4",
+    "googleapis": "^37.2.0",
     "node-fetch": "^2.3.0",
     "nodemailer": "^5.1.1",
     "uuid": "^3.3.2"

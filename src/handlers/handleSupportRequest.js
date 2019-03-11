@@ -4,7 +4,12 @@ const {
   sendSupportNotification,
   sendRefundRequestNotification
 } = require('../lib/mailer');
-const { SUPPORT_MAIL_ADDRESS } = process.env;
+const { SUPPORT_MAIL_ADDRESS, SUPPORT_LOGS_REFUNDS_SHEET_ID } = process.env;
+const {
+  appendSheetRow,
+  setupJWTAuth
+} = require('../lib/setupGoogleSheets')
+let jwtAuthClient = null;
 
 const handleSupportRequest = ({ userFirstName, response }) => {
   return response.send(createTextMessage([
@@ -48,7 +53,12 @@ const handleCustomerMediaVolunteeringStatus = ({
         { text: message }
       ]));
 
+      jwtAuthClient = !jwtAuthClient ? setupJWTAuth() : null;
+
       sendSupportNotification({ customer_email, complaint, name: userFirstName });
+      appendSheetRow(jwtAuthClient, [
+        [new Date().toUTCString(), userFirstName, customer_email, complaint]
+      ])
     } else {
       return response.send({
         redirect_to_blocks: ['Will Volunteer Media']
@@ -68,8 +78,13 @@ const handleCustomerMedia = ({
     } = JSON.parse(parameters);
 
     let message = `Ok thanks, ${userFirstName}... Our support team has been notified, keep an eye on your inbox from ${SUPPORT_MAIL_ADDRESS}`;
-    
+
     sendSupportNotification({ customer_email, complaint, name: userFirstName, userMedia });
+
+    jwtAuthClient = !jwtAuthClient ? setupJWTAuth() : null;    
+    appendSheetRow(jwtAuthClient, [
+      [new Date().toUTCString(), userFirstName, customer_email, complaint]
+    ])
 
     return response.send(createTextMessage([
       { text: message }
@@ -102,6 +117,11 @@ const handleCustomerRefundReason = ({ userFirstName, parameters, response }) => 
   } = JSON.parse(parameters);
 
   sendRefundRequestNotification({ ccdigits, reason, name: userFirstName });
+
+  jwtAuthClient = !jwtAuthClient ? setupJWTAuth() : null;
+  appendSheetRow(jwtAuthClient, [
+    [new Date().toUTCString(), userFirstName, reason, ccdigits]
+  ], 'Sheet1!A1:D1', SUPPORT_LOGS_REFUNDS_SHEET_ID)
 
   return response.send(createTextMessage([
     {
