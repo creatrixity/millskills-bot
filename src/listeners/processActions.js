@@ -13,6 +13,8 @@ const {
   handleCustomerRefundReason
 } = require('../handlers/handleSupportRequest');
 
+const { handleBookSnippetRetrieval } = require('../handlers/handleBookActions');
+
 /**
  * Processes dialog flow actions coming into the webhook.
  * 
@@ -47,6 +49,7 @@ const processDialogflowAction = ({
     'input.initRefundRequest': handleRefundRequest,
     'input.getCustomerCCDigits': handleCustomerCCDigits,
     'input.getCustomerRefundReason': handleCustomerRefundReason,
+    'input.getBookSnippet': handleBookSnippetRetrieval
   }
 
   // Handle invalid actions.
