@@ -4,13 +4,16 @@
  * Creates a text message.
  * 
  * @param {String|Array<Object>} payload
+ * @param {Array<String>} blocks
+ * 
  * @returns {String<JSON>}
  */
-const createTextMessage = (payload) => {
+const createTextMessage = (payload, blocks=[]) => {
   const messages = typeof payload === 'string' ? [{ text: payload }] : payload;
 
   return JSON.stringify({
-    messages
+    messages,
+    redirect_blocks: blocks
   });
 }
 
@@ -18,9 +21,12 @@ const createTextMessage = (payload) => {
  * Creates a gallery comprising of multiple cards.
  * 
  * @param {Array<Object>} cards 
+ * @param {String} text
+ * @param {Array<String>} redirectBlocks 
+ * 
  * @returns {String<JSON>}
  */
-const createGallery = ({ cards, text }) => {
+const createGallery = ({ cards, text, redirectBlocks }) => {
   let messages = [
     {
       attachment: {
