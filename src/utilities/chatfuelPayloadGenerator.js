@@ -13,7 +13,7 @@ const createTextMessage = (payload, blocks=[]) => {
 
   return JSON.stringify({
     messages,
-    redirect_blocks: blocks
+    redirect_to_blocks: blocks
   });
 }
 
