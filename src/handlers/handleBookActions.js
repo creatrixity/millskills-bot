@@ -25,11 +25,22 @@ const handleCustomerBookSnippetWish = ({ parameters, response }) => {
   if (snippetWishAnswer === 'Yes') {
     return response.send(createTextMessage('Thank you for reading an excerpt from _Bigger Love_.'))
   } else {
-    return response.send(createTextMessage('Would you like to read another snippet from _Bigger Love_?', ['Find Book Satisfaction Value']));
+    return response.send(createTextMessage('Thank you!', ['Find Book Satisfaction Value']));
+  }
+}
+
+const handleCustomerFreshBookSnippetWish = ({ parameters, response }) => {
+  const { customerFreshSnippetWish } = JSON.parse(parameters);
+
+  if (customerFreshSnippetWish === 'Yes') {
+    return response.send(createTextMessage('You would like a snippet on?'))
+  } else {
+    return response.send(createTextMessage('Thank you for reading an excerpt from _Bigger Love_.'))
   }
 }
 
 module.exports = {
   handleBookSnippetRetrieval,
-  handleCustomerBookSnippetWish
+  handleCustomerBookSnippetWish,
+  handleCustomerFreshBookSnippetWish
 }

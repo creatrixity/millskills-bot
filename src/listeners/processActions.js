@@ -15,7 +15,8 @@ const {
 
 const {
   handleBookSnippetRetrieval,
-  handleCustomerBookSnippetWish
+  handleCustomerBookSnippetWish,
+  handleCustomerFreshBookSnippetWish
 } = require('../handlers/handleBookActions');
 
 /**
@@ -54,7 +55,8 @@ const processDialogflowAction = ({
     'input.getCustomerCCDigits': handleCustomerCCDigits,
     'input.getCustomerRefundReason': handleCustomerRefundReason,
     'input.getBookSnippet': handleBookSnippetRetrieval,
-    'input.getCustomerBookSnippetWish': handleCustomerBookSnippetWish
+    'input.getCustomerBookSnippetWish': handleCustomerBookSnippetWish,
+    'input.getCustomerFreshBookSnippetWish': handleCustomerFreshBookSnippetWish
   }
 
   // Handle invalid actions.
