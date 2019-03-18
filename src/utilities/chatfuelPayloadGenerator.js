@@ -8,7 +8,7 @@
  * 
  * @returns {String<JSON>}
  */
-const createTextMessage = (payload, blocks=[]) => {
+const createTextMessage = (payload, blocks = []) => {
   const messages = typeof payload === 'string' ? [{ text: payload }] : payload;
 
   return JSON.stringify({

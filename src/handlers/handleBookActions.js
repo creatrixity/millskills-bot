@@ -19,7 +19,17 @@ const handleBookSnippetRetrieval = async ({ parameters, response }) => {
   return response.send(createTextMessage('You got your snippets', ['Find Book Satisfaction Value']));
 };
 
+const handleCustomerBookSnippetWish = ({ parameters, response }) => {
+  const { snippetWishAnswer } = JSON.parse(parameters);
+
+  if (snippetWishAnswer === 'Ok') {
+    return response.send(createTextMessage('The user wants another snippet'))
+  } else {
+    return response.send(createTextMessage('The user does not want another snippet'))
+  }
+}
 
 module.exports = {
-  handleBookSnippetRetrieval
+  handleBookSnippetRetrieval,
+  handleCustomerBookSnippetWish
 }

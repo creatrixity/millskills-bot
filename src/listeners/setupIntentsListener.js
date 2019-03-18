@@ -17,7 +17,9 @@ const setupIntentsListener = async (request, response) => {
   const userMessengerId = request.body['messenger user id'];
   const userFirstName = request.body['first name'];
   const userMedia = request.body['customer_media'];
-  const textToDetect = userQueryText && userQueryText.length ? userQueryText : userMedia;
+  const userQuickReply = request.body['user quick reply'];
+  let textToDetect = userQueryText && userQueryText.length ? userQueryText : userMedia;
+  textToDetect = userQuickReply && userQuickReply.length ? userQuickReply: textToDetect;
 
   // Create the DialogFlow session.
   detectTextIntent(
@@ -37,6 +39,7 @@ const setupIntentsListener = async (request, response) => {
         userFirstName,
         userQueryText,
         userMedia,
+        userQuickReply,
         response
       });
     }

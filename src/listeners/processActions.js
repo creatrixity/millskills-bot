@@ -13,7 +13,10 @@ const {
   handleCustomerRefundReason
 } = require('../handlers/handleSupportRequest');
 
-const { handleBookSnippetRetrieval } = require('../handlers/handleBookActions');
+const {
+  handleBookSnippetRetrieval,
+  handleCustomerBookSnippetWish
+} = require('../handlers/handleBookActions');
 
 /**
  * Processes dialog flow actions coming into the webhook.
@@ -29,6 +32,7 @@ const processDialogflowAction = ({
   parameters,
   outputContexts,
   userQueryText,
+  userQuickReply,
   userFirstName,
   userMedia,
   result,
@@ -49,7 +53,8 @@ const processDialogflowAction = ({
     'input.initRefundRequest': handleRefundRequest,
     'input.getCustomerCCDigits': handleCustomerCCDigits,
     'input.getCustomerRefundReason': handleCustomerRefundReason,
-    'input.getBookSnippet': handleBookSnippetRetrieval
+    'input.getBookSnippet': handleBookSnippetRetrieval,
+    'input.getCustomerBookSnippetWish': {}
   }
 
   // Handle invalid actions.
@@ -58,7 +63,7 @@ const processDialogflowAction = ({
   } else {
     const actionObject = actionsMap[action];
 
-    return actionObject.apply(this, [{ parameters, userFirstName, userMedia, response }]);  
+    return actionObject.apply(this, [{ parameters, userFirstName, userMedia, userQuickReply, response }]);  
   }
 };
 
