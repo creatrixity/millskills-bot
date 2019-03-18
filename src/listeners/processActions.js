@@ -54,7 +54,7 @@ const processDialogflowAction = ({
     'input.getCustomerCCDigits': handleCustomerCCDigits,
     'input.getCustomerRefundReason': handleCustomerRefundReason,
     'input.getBookSnippet': handleBookSnippetRetrieval,
-    'input.getCustomerBookSnippetWish': {}
+    'input.getCustomerBookSnippetWish': handleCustomerBookSnippetWish
   }
 
   // Handle invalid actions.

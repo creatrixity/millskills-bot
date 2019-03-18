@@ -22,7 +22,7 @@ const handleBookSnippetRetrieval = async ({ parameters, response }) => {
 const handleCustomerBookSnippetWish = ({ parameters, response }) => {
   const { snippetWishAnswer } = JSON.parse(parameters);
 
-  if (snippetWishAnswer === 'Ok') {
+  if (snippetWishAnswer === 'Yes') {
     return response.send(createTextMessage('The user wants another snippet'))
   } else {
     return response.send(createTextMessage('The user does not want another snippet'))
