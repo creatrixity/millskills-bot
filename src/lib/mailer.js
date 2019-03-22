@@ -40,12 +40,12 @@ const sendMail = ({
   });
 };
 
-const sendSupportNotification = ({ email, complaint, name, media }) => {
+const sendSupportNotification = ({ customer_email, complaint, name, media }) => {
   return sendMail({
     templatePath: '../templates/mail/supportNotificationMail.ejs',
     templateParams: {
       complaint,
-      email,
+      email: customer_email,
       name,
       media  
     },
