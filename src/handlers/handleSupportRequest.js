@@ -96,7 +96,16 @@ const handleRefundRequest = ({ userFirstName, response }) => {
     { text: `No problem ${userFirstName}.`},
     { text: "To be eligible for refunds, your subscription must be less than 30 days old."},
     { text: "If you request a refund before the 30 day period has elapsed, remember to honor our guarantee and cancel the subscription."},
-    { text: "With that in mind, for us to properly process your request, we'll ask a couple of questions."},
+    { text: "With that in mind, for us to properly process your request, we'll ask three questions."},
+    { text: "What was the e-mail you used when making the payment?"},
+  ]));
+};
+
+const handleCustomerRefundEmail = ({ userFirstName, parameters, response }) => {
+  const { customerRefundEmail } = JSON.parse(parameters);
+
+  return response.send(createTextMessage([
+    { text: `That's noted, ${userFirstName}. Your payment e-mail address is ${customerRefundEmail}.`},
     { text: "What are the last 4 digits of the credit card (CC) you used?"},
   ]));
 };
@@ -113,15 +122,16 @@ const handleCustomerCCDigits = ({ userFirstName, parameters, response }) => {
 const handleCustomerRefundReason = ({ userFirstName, parameters, response }) => {
   const {
     ccdigits,
+    customerRefundEmail,
     reason
   } = JSON.parse(parameters);
 
-  sendRefundRequestNotification({ ccdigits, reason, name: userFirstName });
+  sendRefundRequestNotification({ ccdigits, customerRefundEmail, reason, name: userFirstName });
 
   jwtAuthClient = !jwtAuthClient ? setupJWTAuth() : null;
   appendSheetRow(jwtAuthClient, [
-    [new Date().toUTCString(), userFirstName, reason, ccdigits]
-  ], 'Sheet1!A1:D1', SUPPORT_LOGS_REFUNDS_SHEET_ID)
+    [new Date().toUTCString(), userFirstName, reason, ccdigits, customerRefundEmail]
+  ], 'Sheet1!A1:E1', SUPPORT_LOGS_REFUNDS_SHEET_ID)
 
   return response.send(createTextMessage([
     {
@@ -137,6 +147,7 @@ module.exports = {
   handleCustomerMediaVolunteeringStatus,
   handleCustomerMedia,
   handleRefundRequest,
+  handleCustomerRefundEmail,
   handleCustomerCCDigits,
   handleCustomerRefundReason
 };

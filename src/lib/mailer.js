@@ -53,13 +53,14 @@ const sendSupportNotification = ({ email, complaint, name, media }) => {
   });
 }
 
-const sendRefundRequestNotification = ({ ccdigits, reason, name }) => {
+const sendRefundRequestNotification = ({ ccdigits, reason, name, customerRefundEmail }) => {
   return sendMail({
     templatePath: '../templates/mail/refundRequestMail.ejs',
     templateParams: {
       reason,
       ccdigits,
       name,
+      customerRefundEmail
     },
     subject: `Chatbot Support: Refund Request from ${name}`
   });

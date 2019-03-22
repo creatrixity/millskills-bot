@@ -10,7 +10,8 @@ const {
   handleCustomerMedia,
   handleRefundRequest,
   handleCustomerCCDigits,
-  handleCustomerRefundReason
+  handleCustomerRefundEmail,
+  handleCustomerRefundReason,
 } = require('../handlers/handleSupportRequest');
 
 const {
@@ -53,6 +54,7 @@ const processDialogflowAction = ({
     'input.getCustomerMedia': handleCustomerMedia,
     'input.initRefundRequest': handleRefundRequest,
     'input.getCustomerCCDigits': handleCustomerCCDigits,
+    'input.getCustomerRefundEmail': handleCustomerRefundEmail,
     'input.getCustomerRefundReason': handleCustomerRefundReason,
     'input.getBookSnippet': handleBookSnippetRetrieval,
     'input.getCustomerBookSnippetWish': handleCustomerBookSnippetWish,
